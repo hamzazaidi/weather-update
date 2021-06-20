@@ -4,13 +4,13 @@ const cors = require('cors');
 const axios = require('axios');
 const app = express();
 
+const cityList = require('./src/city.list.json')
+
 app.use(cors());
 
 app.get('/getLocations', async (req, res) => {
-    const locationUrl =
-    `https://www.metaweather.com/api/location/search/?query=${req.query.location}`;
-    const response = await axios.get(locationUrl);
-    res.send(response.data)
+    const list = cityList.filter(c => c.name.startsWith(req.query.location))
+    res.send(list)
 })
 
 // Serve only the static files form the dist directory

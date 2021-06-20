@@ -40,8 +40,9 @@
     if (state.cities.length) {
       state.cities.forEach((city) => {
         let element = document.createElement("li");
-        element.innerText = city.title;
-        element.setAttribute("data-id", city.woeid);
+        const displayText = [ city.name, city.state, city.country ]
+        element.innerText = displayText.filter(v => !!v).join(' - ');
+        element.setAttribute("data-id", city.id);
         optionListEl.appendChild(element);
       });
     } else {
@@ -63,7 +64,7 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        state = { ...state, cities: [ ...data ] }
+        state = { ...state, cities: [ ...data.slice(0,5) ] }
         clearIsLoading();
         updateDropdown();
       });
