@@ -16,12 +16,12 @@ body {
   div.container {
     height: 100vh;
     position: relative;
-    > section {
+    > section.search-bar {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      transition: all 300ms ease-out;
+      transition: all 0.6s ease-out;
       &.selected {
         top: 10%;
         transform: translate(-50%, 50%);
@@ -30,104 +30,146 @@ body {
           transform: scale(1);
         }
       }
-    }
-    .auto-complete{
-      position: relative;
-      box-sizing: border-box;
-      @media only screen and (max-width: 600px) {
-        width: 350px;
-      }
-      img {
-        position: absolute;
-        &.search {
-          transform: translate(25px, 25px);
-          @media only screen and (max-width: 600px) {
-            transform: translate(15px, 20px);
-          }
-        }
-        &.loading {        
-          transform: translate(-55px, 25px) scale(0);
-          transition: transform 200ms ease-out;
-          @media only screen and (max-width: 600px) {
-            transform: translate(-50px, 20px) scale(0);
-          }
-        }
-      }    
-      .search-box {
-        border: 0;
-        background-color: lighten($base-color, 5%);
-        padding: 20px 80px;
-        border: 1px solid $base-bright;
-        color: $text-color;
-        font-size: 40px;
-        transition: padding 150ms ease-out;
-        width: 100%;
+      .auto-complete{
+        position: relative;
         box-sizing: border-box;
+        animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
         @media only screen and (max-width: 600px) {
-          font-size: 25px; 
-          padding: 20px 60px;
+          width: 350px;
         }
-      }
-      .option-list{
-        border: 1px solid $base-bright;
-        border-top:0;  
-        position: absolute;
-        width: 100%;
-        box-sizing: border-box;
-        li {
-          padding: 20px;
-          border-bottom: 1px solid $base-bright;
-          &:last-child {
-            border-bottom:0;
+        img {
+          position: absolute;
+          &.search {
+            transform: translate(25px, 25px);
+            @media only screen and (max-width: 600px) {
+              transform: translate(15px, 20px);
+            }
           }
-          &:hover {
-            cursor: pointer;
-            background-color: lighten($base-color, 10%)
+          &.loading {        
+            transform: translate(-55px, 25px) scale(0);
+            transition: transform 200ms ease-out;
+            @media only screen and (max-width: 600px) {
+              transform: translate(-50px, 20px) scale(0);
+            }
           }
-          &.no-matches {
-            cursor: not-allowed;
+        }    
+        .search-box {
+          border: 0;
+          background-color: lighten($base-color, 5%);
+          padding: 20px 80px;
+          border: 1px solid $base-bright;
+          color: $text-color;
+          font-size: 40px;
+          width: 100%;
+          box-sizing: border-box;
+          @media only screen and (max-width: 600px) {
+            font-size: 25px; 
+            padding: 20px 60px;
           }
-          span {
-            color: $text-color-1;
-            &:first-child {
-              color: lighten($text-color-1, 20%);
-              font-size: 20px;;
+        }
+        .option-list{
+          border: 1px solid $base-bright;
+          border-top:0;  
+          position: absolute;
+          width: 100%;
+          box-sizing: border-box;
+          li {
+            padding: 20px;
+            border-bottom: 1px solid $base-bright;
+            &:last-child {
+              border-bottom:0;
+            }
+            &:hover {
+              cursor: pointer;
+              background-color: lighten($base-color, 10%)
+            }
+            &.no-matches {
+              cursor: not-allowed;
+            }
+            span {
+              color: $text-color-1;
+              &:first-child {
+                color: lighten($text-color-1, 20%);
+                font-size: 20px;;
+              }
+            }
+          }
+        }
+        &.no-options {
+          .option-list {
+            display: none;
+          }       
+        }
+        &.is-loading {
+          img.loading {
+            transform: translate(-55px, 25px) scale(1);
+          }        
+          @media only screen and (max-width: 600px) {
+            img.loading {
+              transform: translate(-50px, 20px) scale(1);
             }
           }
         }
       }
-      &.no-options {
-        .option-list {
-          display: none;
-        }       
-      }
-      &.is-loading {
-        img.loading {
-          transform: translate(-55px, 25px) scale(1);
-        }        
-        @media only screen and (max-width: 600px) {
-          img.loading {
-            transform: translate(-50px, 20px) scale(1);
+  
+      .location-details {
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.7s ease-in-out;  
+        animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
+        > div {
+          span {
+            color: $text-color-1;
+            margin: 0 10px;
           }
         }
       }
     }
-
-    .location-details {
-      margin: 10px;
+    > section.weather-details {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 300ms ease-out;
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      opacity: 0;
-      transform: scale(0);
-      transition: all 300ms ease-in-out;      
-      > div {
-        span {
-          color: $text-color-1;
-          margin: 0 10px;
+      &.selected {
+        top: 20%;
+        transform: translate(-50%, 50%);
+      }
+      article {
+        background: #002d58;
+        border: 1px solid #0374ff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 10px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 3px 0px #0374ff;
+        margin: 0 10px;
+        width: 200px;
+        > h1 {
+          font-size: 55px;
+          margin: 0;
         }
       }
     }
   }
 }
 
+
+
+@keyframes slide-up {
+  from {
+      opacity: 0;
+      transform: translateY(25%);
+  }
+  to {
+      opacity: 1;
+      transform: none;
+  }
+}

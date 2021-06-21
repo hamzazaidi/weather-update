@@ -1,65 +1,79 @@
 (() => {
   const autoCompleteEl = document.getElementById("auto-complete");
   const optionListEl = document.getElementById("option-list");
-  const searchBoxEl = document.getElementById('search-box');
-  const searchSection = document.getElementById('search-section');
-  const locationDetailsEl = document.getElementById('location-details')
+  const searchBoxEl = document.getElementById("search-box");
+  const searchSectionEl = document.getElementById("search-section");
+  const locationDetailsEl = document.getElementById("location-details");
+  const weatherDetailsEl = document.getElementById('weather-details');
   const locationUrl = "http://localhost:8080/getLocations";
   const initalSelectedCity = {
     id: -1,
-    name: '',
-    state: '',
-    country: '',
+    name: "",
+    state: "",
+    country: "",
     coord: {
       lon: -1,
-      lat: -1
-    }
+      lat: -1,
+    },
   };
   let state = {
     cities: [],
-    selectedCity: { ...initalSelectedCity }
+    selectedCity: { ...initalSelectedCity },
   };
 
   const clearList = () => {
     optionListEl.innerHTML = "";
-    autoCompleteEl.classList.add("no-options");    
+    autoCompleteEl.classList.add("no-options");
   };
 
   const clearSelectedCity = () => {
-    searchSection.classList.remove('selected');    
-  }
+    searchSectionEl.classList.remove("selected");
+    weatherDetailsEl.classList.remove('selected');
+  };
 
   const setSearchBoxValue = () => {
-    searchSection.classList.add('selected')
+    searchSectionEl.classList.add("selected");
+    weatherDetailsEl.classList.add('selected');
     searchBoxEl.value = state.selectedCity.name;
-  }
+  };
 
-  const setLocationDetails = () => {
-    locationDetailsEl.innerHTML = getDisplayText(state.selectedCity, ' ')
-  }
-
+  const setLocationDetails = (city) => {
+    locationDetailsEl.innerHTML = getDisplayText(city, " ", ['state','country']);
+  };
   const clearIsLoading = () => {
-    autoCompleteEl.classList.remove('is-loading');
-  }
+    autoCompleteEl.classList.remove("is-loading");
+  };
 
   const setIsLoading = () => {
-    autoCompleteEl.classList.add('is-loading');
-  }
+    autoCompleteEl.classList.add("is-loading");
+  };
 
-  const getDisplayText = (city, splitBy) => [ 
-    city.name, 
-    city.state, 
-    city.country
-  ].filter(v => !!v)
-  .map(v => (`<span>${v}</span>`))
-  .join(splitBy)
+  const getDisplayText = (
+    city,
+    splitBy,
+    includeFields = ["name", "state", "country"]
+  ) => {
+    return includeFields
+      .map((field) => city[field])
+      .filter((v) => !!v)
+      .map((v) => `<span>${v}</span>`)
+      .join(splitBy);
+  };
+
+  // [
+  //   city.name,
+  //   city.state,
+  //   city.country
+  // ].filter(v => !!v)
+  // .map(v => (`<span>${v}</span>`))
+  // .join(splitBy)
 
   const updateDropdown = () => {
     clearList();
     if (state.cities.length) {
       state.cities.forEach((city) => {
         let element = document.createElement("li");
-        element.innerHTML = getDisplayText(city, ' - ');
+        element.innerHTML = getDisplayText(city, " - ");
         element.setAttribute("data-id", city.id);
         optionListEl.appendChild(element);
       });
@@ -82,7 +96,7 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        state = { ...state, cities: [ ...data.slice(0,5) ] }
+        state = { ...state, cities: [...data.slice(0, 5)] };
         clearIsLoading();
         updateDropdown();
       });
@@ -90,7 +104,9 @@
 
   autoCompleteEl.addEventListener("keyup", (e) => {
     const value = e.target.value;
-    if(value === state.selectedCity.title) { return; }
+    if (value === state.selectedCity.title) {
+      return;
+    }
     if (value.length > 3) {
       fethCityNames(value);
     } else {
@@ -100,18 +116,18 @@
   });
 
   optionListEl.addEventListener("click", (e) => {
-    console.log(e)
+    console.log(e);
     const id = parseInt(e.target.dataset.id);
     if (id > 0) {
-      state = { 
+      state = {
         ...state,
-        selectedCity: { 
-          ...state.cities.find(c => c.id === id)
-        }
-      }        
-      setSearchBoxValue(); 
-      setLocationDetails();
-      clearList();  
+        selectedCity: {
+          ...state.cities.find((c) => c.id === id),
+        },
+      };
+      setSearchBoxValue();
+      setLocationDetails(state.selectedCity);
+      clearList();
     }
-  });  
+  });
 })();
