@@ -1,6 +1,7 @@
 $base-color: #00203e;
 $base-bright: #0374ff;
 $text-color: #fff;
+$text-color-1: rgb(177, 177, 177);
 body {
   font-family: 'Source Code Pro', monospace;
   background-color: $base-color;
@@ -24,6 +25,10 @@ body {
       &.selected {
         top: 10%;
         transform: translate(-50%, 50%);
+        .location-details {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
     }
     .auto-complete{
@@ -53,7 +58,7 @@ body {
         background-color: lighten($base-color, 5%);
         padding: 20px 80px;
         border: 1px solid $base-bright;
-        color: #fff;
+        color: $text-color;
         font-size: 40px;
         transition: padding 150ms ease-out;
         width: 100%;
@@ -82,6 +87,13 @@ body {
           &.no-matches {
             cursor: not-allowed;
           }
+          span {
+            color: $text-color-1;
+            &:first-child {
+              color: lighten($text-color-1, 20%);
+              font-size: 20px;;
+            }
+          }
         }
       }
       &.no-options {
@@ -97,6 +109,22 @@ body {
           img.loading {
             transform: translate(-50px, 20px) scale(1);
           }
+        }
+      }
+    }
+
+    .location-details {
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 300ms ease-in-out;      
+      > div {
+        span {
+          color: $text-color-1;
+          margin: 0 10px;
         }
       }
     }

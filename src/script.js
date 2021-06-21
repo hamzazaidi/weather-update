@@ -3,10 +3,17 @@
   const optionListEl = document.getElementById("option-list");
   const searchBoxEl = document.getElementById('search-box');
   const searchSection = document.getElementById('search-section');
+  const locationDetailsEl = document.getElementById('location-details')
   const locationUrl = "http://localhost:8080/getLocations";
   const initalSelectedCity = {
     id: -1,
-    title: ''
+    name: '',
+    state: '',
+    country: '',
+    coord: {
+      lon: -1,
+      lat: -1
+    }
   };
   let state = {
     cities: [],
@@ -24,7 +31,11 @@
 
   const setSearchBoxValue = () => {
     searchSection.classList.add('selected')
-    searchBoxEl.value = state.selectedCity.title;
+    searchBoxEl.value = state.selectedCity.name;
+  }
+
+  const setLocationDetails = () => {
+    locationDetailsEl.innerHTML = getDisplayText(state.selectedCity, ' ')
   }
 
   const clearIsLoading = () => {
@@ -35,19 +46,26 @@
     autoCompleteEl.classList.add('is-loading');
   }
 
+  const getDisplayText = (city, splitBy) => [ 
+    city.name, 
+    city.state, 
+    city.country
+  ].filter(v => !!v)
+  .map(v => (`<span>${v}</span>`))
+  .join(splitBy)
+
   const updateDropdown = () => {
     clearList();
     if (state.cities.length) {
       state.cities.forEach((city) => {
         let element = document.createElement("li");
-        const displayText = [ city.name, city.state, city.country ]
-        element.innerText = displayText.filter(v => !!v).join(' - ');
+        element.innerHTML = getDisplayText(city, ' - ');
         element.setAttribute("data-id", city.id);
         optionListEl.appendChild(element);
       });
     } else {
       let element = document.createElement("li");
-      element.innerText = "No matches";
+      element.innerHTML = "No matches";
       element.setAttribute("data-id", "-1");
       element.setAttribute("class", "no-matches");
       optionListEl.appendChild(element);
@@ -82,10 +100,17 @@
   });
 
   optionListEl.addEventListener("click", (e) => {
-    const id = e.target.dataset.id;
+    console.log(e)
+    const id = parseInt(e.target.dataset.id);
     if (id > 0) {
-      state = { ...state, selectedCity: { id, title: e.target.innerText } }        
+      state = { 
+        ...state,
+        selectedCity: { 
+          ...state.cities.find(c => c.id === id)
+        }
+      }        
       setSearchBoxValue(); 
+      setLocationDetails();
       clearList();  
     }
   });  
