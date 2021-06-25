@@ -1,6 +1,14 @@
 (() => {
   const templates = {
-    current: ``
+    hourly: `
+    <div class="hourly">
+      <div class="time" data-attrib="time"></div>
+      <img data-attrib="icon" class="weather_icon" src="./src/svg/10d.svg" width="100" alt="">
+      <div>
+        <span data-attrib="temp"></span>&#176;
+      </div>
+    </div>
+    `
   }
 
   const appEl = document.getElementById('search-section');
@@ -9,10 +17,7 @@
   const searchBoxEl = autoCompleteEl.querySelector(".search-box");
   const locationDetailsEl = appEl.querySelector("#location-details");
   const currentWeatherDayDetailsEl = appEl.querySelector('.current-weather-day-details')
-  const iconEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details img[data-attrib="icon"]');
-  const conditionEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details div[data-attrib="condition"]')
-  const dateEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details div[data-attrib="date"]');
-  const tempEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details span[data-attrib="temp"]')  
+  const hourlyDetailsEl = appEl.querySelector('.weather-hourly')
   const locationUrl = "http://localhost:8080/getLocations";
   const detailsUrl = "http://localhost:8080/details";
   const initalSelectedCity = {
@@ -43,14 +48,29 @@
 
   const getDate = (unix_timestamp) => new Date(unix_timestamp * 1000);
 
+  const displayTemp = (temp) => Math.ceil(temp);
+
   const renderCurrentDay = () => {
     const { current } = state.weatherDetails;
     const { weather } = current;
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    iconEl.src = `/${weather[0].icon}.0eb8ff4c.svg`;
-    conditionEl.innerText = weather[0].description.toUpperCase();
-    dateEl.innerText = getDate(current.dt).toLocaleDateString("en-US", options);
-    tempEl.innerText = Math.ceil(current.temp);
+    currentWeatherDayDetailsEl.querySelector('#current-weather-day-details img[data-attrib="icon"]').src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
+    currentWeatherDayDetailsEl.querySelector('div[data-attrib="condition"]').innerText = weather[0].description.toUpperCase();
+    currentWeatherDayDetailsEl.querySelector('div[data-attrib="date"]').innerText = getDate(current.dt).toLocaleDateString("en-US", options);
+    currentWeatherDayDetailsEl.querySelector('span[data-attrib="temp"]').innerText = displayTemp(current.temp);
+  }
+
+  const renderHourly = () => {
+    const { hourly } = state.weatherDetails;
+    hourly.forEach(h => {
+      const { weather } = h;
+      const template = templates.hourly;
+      const dom = stringToHTML(template).querySelector('.hourly');
+      dom.querySelector('div[data-attrib="time"]').innerText = getDate(h.dt).toLocaleString('en-US', { hour: 'numeric', hour12: true })
+      dom.querySelector('img[data-attrib="icon"]').src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
+      dom.querySelector('span[data-attrib="temp"]').innerText = displayTemp(h.temp);
+      hourlyDetailsEl.appendChild(dom);
+    })
   }
 
   const clearList = () => {
@@ -125,7 +145,9 @@
   };
 
   const fetchDetails = () => {
-    fetch(detailsUrl, {
+    const { coord } = state.selectedCity;
+    const { lat, lon } = coord;
+    fetch(`${detailsUrl}?lat=${lat}&lon=${lon}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -134,6 +156,7 @@
     .then(data => {
       state = { ...state, weatherDetails: { ...data } };
       renderCurrentDay();
+      renderHourly();
     })
   }
 

@@ -1,5 +1,6 @@
 $base-color: #00203e;
 $base-bright: #0374ff;
+$base-bright-1: #00dfff;
 $text-color: #fff;
 $text-color-1: rgb(177, 177, 177);
 body {
@@ -44,6 +45,9 @@ body {
           // @media only screen and (max-width: 600px) {
           //   transform: translate(-50%, 4%);
           // }
+        }
+        .weather-hourly {
+          opacity: 1;
         }
       }
       .auto-complete{
@@ -156,12 +160,12 @@ body {
         flex-wrap: wrap;
       }
       article {
-        background: #002d58;
+        background: lighten($base-color, 5%);
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px 40px;
-        box-shadow: 0px 0px 3px 0px #0374ff;
+        box-shadow: 0px 0px 3px 0px $base-bright;
         width: 100%;
         // @media only screen and (max-width: 600px) {
         //   width: 100%;
@@ -185,7 +189,7 @@ body {
           h1 {
             font-size: 75px;
             margin: 0;
-            color: #00dfff;
+            color: $base-bright-1;
           }
         }
       }
@@ -195,11 +199,18 @@ body {
       margin: 20px 0;
       display: flex;
       justify-content: flex-start;
+      overflow: scroll;
+      transition: all 0.8s ease-out;
+      opacity: 0;
+      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
       .hourly {
         margin: 0 10px;
         > div {
           font-size: 20px;
           text-align: center;
+        }
+        .time {
+          color: $text-color-1;
         }
       }
     }
@@ -207,6 +218,18 @@ body {
   }
 }
 
+
+@keyframes show-details {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 
 @keyframes slide-up {
