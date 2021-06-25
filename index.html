@@ -28,48 +28,41 @@
         <div class="location-details">
           <div id="location-details"></div>
         </div>
-      </section>
-      <section id="weather-details"  class="weather-details">
-        <article>
-          <h1>27</h1>
-          <div>
-            <div>Friday, 6 September</div>
+        <div id="current-weather-day-details"  class="current-weather-day-details">
+          <article class="weather_day">
+            <div class="weather_graphic">
+              <img class="weather_icon" data-attrib="icon" src="" width="200" alt="">
+              <div class="weather_condition" data-attrib="condition"></div>
+            </div>
+            <div class="weather_info">
+              <div data-attrib="date"></div>
+              <h1>
+                <span data-attrib="temp"></span>&#176;
+              </h1>
+            </div>
+          </article>
+        </div>
+        <div id="weather-hourly" class="weather-hourly">
+          <div class="hourly">
+            <img class="weather_icon" src="./src/svg/10d.svg" width="100" alt="">
+            <div>
+              27<span>&#176;</span>
+            </div>
           </div>
-          <div>
-            <img src="./src/svg/01d.svg" width="200" alt="">
-            <div>Rainy</div>
+          <div class="hourly">
+            <img class="weather_icon" src="./src/svg/10d.svg" width="100" alt="">
+            <div>
+              27<span>&#176;</span>
+            </div>
           </div>
-        </article>
-        <article>
-          <h1>27</h1>
-          <div>
-            <div>Friday, 6 September</div>
+          <div class="hourly">
+            <img class="weather_icon" src="./src/svg/10d.svg" width="100" alt="">
+            <div>
+              27<span>&#176;</span>
+            </div>
           </div>
-          <div>
-            <img src="./src/svg/04d.svg" width="200" alt="">
-            <div>Rainy</div>
-          </div>
-        </article>
-        <article>
-          <h1>27</h1>
-          <div>
-            <div>Friday, 6 September</div>
-          </div>
-          <div>
-            <img src="./src/svg/09d.svg" width="200" alt="">
-            <div>Rainy</div>
-          </div>
-        </article>
-        <article>
-          <h1>27</h1>
-          <div>
-            <div>Friday, 6 September</div>
-          </div>
-          <div>
-            <img src="./src/svg/09d.svg" width="200" alt="">
-            <div>Rainy</div>
-          </div>
-        </article>
+          
+        </div>
       </section>
     </div>
     <script type="text/javascript" src="./src/script.js"></script>

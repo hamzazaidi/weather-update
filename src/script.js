@@ -1,11 +1,20 @@
 (() => {
-  const autoCompleteEl = document.getElementById("auto-complete");
-  const optionListEl = document.getElementById("option-list");
-  const searchBoxEl = document.getElementById("search-box");
-  const searchSectionEl = document.getElementById("search-section");
-  const locationDetailsEl = document.getElementById("location-details");
-  const weatherDetailsEl = document.getElementById('weather-details');
+  const templates = {
+    current: ``
+  }
+
+  const appEl = document.getElementById('search-section');
+  const autoCompleteEl = appEl.querySelector(".auto-complete");
+  const optionListEl = autoCompleteEl.querySelector(".option-list");
+  const searchBoxEl = autoCompleteEl.querySelector(".search-box");
+  const locationDetailsEl = appEl.querySelector("#location-details");
+  const currentWeatherDayDetailsEl = appEl.querySelector('.current-weather-day-details')
+  const iconEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details img[data-attrib="icon"]');
+  const conditionEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details div[data-attrib="condition"]')
+  const dateEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details div[data-attrib="date"]');
+  const tempEl = currentWeatherDayDetailsEl.querySelector('#current-weather-day-details span[data-attrib="temp"]')  
   const locationUrl = "http://localhost:8080/getLocations";
+  const detailsUrl = "http://localhost:8080/details";
   const initalSelectedCity = {
     id: -1,
     name: "",
@@ -19,7 +28,30 @@
   let state = {
     cities: [],
     selectedCity: { ...initalSelectedCity },
+    weatherDetails: {}
   };
+
+  var stringToHTML = function (str) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(str, 'text/html');
+    return doc.body;
+  };
+
+  const initialize = () => {
+    
+  }
+
+  const getDate = (unix_timestamp) => new Date(unix_timestamp * 1000);
+
+  const renderCurrentDay = () => {
+    const { current } = state.weatherDetails;
+    const { weather } = current;
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    iconEl.src = `/${weather[0].icon}.0eb8ff4c.svg`;
+    conditionEl.innerText = weather[0].description.toUpperCase();
+    dateEl.innerText = getDate(current.dt).toLocaleDateString("en-US", options);
+    tempEl.innerText = Math.ceil(current.temp);
+  }
 
   const clearList = () => {
     optionListEl.innerHTML = "";
@@ -27,13 +59,11 @@
   };
 
   const clearSelectedCity = () => {
-    searchSectionEl.classList.remove("selected");
-    weatherDetailsEl.classList.remove('selected');
+    appEl.classList.remove("selected");
   };
 
   const setSearchBoxValue = () => {
-    searchSectionEl.classList.add("selected");
-    weatherDetailsEl.classList.add('selected');
+    appEl.classList.add("selected");
     searchBoxEl.value = state.selectedCity.name;
   };
 
@@ -59,14 +89,6 @@
       .map((v) => `<span>${v}</span>`)
       .join(splitBy);
   };
-
-  // [
-  //   city.name,
-  //   city.state,
-  //   city.country
-  // ].filter(v => !!v)
-  // .map(v => (`<span>${v}</span>`))
-  // .join(splitBy)
 
   const updateDropdown = () => {
     clearList();
@@ -102,6 +124,19 @@
       });
   };
 
+  const fetchDetails = () => {
+    fetch(detailsUrl, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => response.json())
+    .then(data => {
+      state = { ...state, weatherDetails: { ...data } };
+      renderCurrentDay();
+    })
+  }
+
   autoCompleteEl.addEventListener("keyup", (e) => {
     const value = e.target.value;
     if (value === state.selectedCity.title) {
@@ -116,7 +151,6 @@
   });
 
   optionListEl.addEventListener("click", (e) => {
-    console.log(e);
     const id = parseInt(e.target.dataset.id);
     if (id > 0) {
       state = {
@@ -127,7 +161,10 @@
       };
       setSearchBoxValue();
       setLocationDetails(state.selectedCity);
+      fetchDetails();
       clearList();
     }
   });
+
+  initialize();
 })();

@@ -3,6 +3,7 @@ $base-bright: #0374ff;
 $text-color: #fff;
 $text-color-1: rgb(177, 177, 177);
 body {
+  margin: 0;
   font-family: 'Source Code Pro', monospace;
   background-color: $base-color;
   color: $text-color;
@@ -16,27 +17,40 @@ body {
   div.container {
     height: 100vh;
     position: relative;
+    width: 70%;
+    margin: 0 auto;
+    > section {
+      width: 100%;
+    }
     > section.search-bar {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       transition: all 0.6s ease-out;
+      @media only screen and (max-width: 600px) {
+        width: 350px;
+      }
       &.selected {
-        top: 10%;
-        transform: translate(-50%, 50%);
+        top: 0%;
+        transform: translate(-50%, 10%);
         .location-details {
           opacity: 1;
           transform: scale(1);
+        }
+        .current-weather-day-details {
+          opacity: 1;
+          z-index: 1;
+          // @media only screen and (max-width: 600px) {
+          //   transform: translate(-50%, 4%);
+          // }
         }
       }
       .auto-complete{
         position: relative;
         box-sizing: border-box;
         animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
-        @media only screen and (max-width: 600px) {
-          width: 350px;
-        }
+      
         img {
           position: absolute;
           &.search {
@@ -73,6 +87,7 @@ body {
           position: absolute;
           width: 100%;
           box-sizing: border-box;
+          z-index: 100;
           li {
             padding: 20px;
             border-bottom: 1px solid $base-bright;
@@ -113,12 +128,13 @@ body {
       }
   
       .location-details {
-        margin: 10px;
+        margin: 30px;
         display: flex;
         align-items: center;
         justify-content: flex-start;
         opacity: 0;
         transform: scale(0);
+        height: 30px;
         transition: all 0.7s ease-in-out;  
         animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
         > div {
@@ -128,36 +144,66 @@ body {
           }
         }
       }
+    
     }
-    > section.weather-details {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transition: all 300ms ease-out;
+
+    .current-weather-day-details {
+      transition: all 0.8s ease-out;
       display: flex;
-      &.selected {
-        top: 20%;
-        transform: translate(-50%, 50%);
+      opacity: 0;
+      z-index: -1;
+      @media only screen and (max-width: 600px) {
+        flex-wrap: wrap;
       }
       article {
         background: #002d58;
-        border: 1px solid #0374ff;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 20px 10px;
-        border-radius: 5px;
+        padding: 20px 40px;
         box-shadow: 0px 0px 3px 0px #0374ff;
-        margin: 0 10px;
-        width: 200px;
-        > h1 {
-          font-size: 55px;
-          margin: 0;
+        width: 100%;
+        // @media only screen and (max-width: 600px) {
+        //   width: 100%;
+        //   // height: 400px;
+        // }
+        // @for $i from 1 through 7 {
+        //   &:nth-child(#{$i}) {
+        //     background-color: darken(#0374ff, $i * 5%);
+        //   }
+        // }
+        
+        .weather_graphic{
+          padding: 20px;
+          .weather_condition {
+            text-align: center;
+          }
+        }
+        .weather_info {
+          flex-grow: 1;
+          padding: 20px;
+          h1 {
+            font-size: 75px;
+            margin: 0;
+            color: #00dfff;
+          }
         }
       }
     }
+
+    .weather-hourly {
+      margin: 20px 0;
+      display: flex;
+      justify-content: flex-start;
+      .hourly {
+        margin: 0 10px;
+        > div {
+          font-size: 20px;
+          text-align: center;
+        }
+      }
+    }
+    
   }
 }
 
