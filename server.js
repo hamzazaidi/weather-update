@@ -15,6 +15,7 @@ app.get('/getLocations', async (req, res) => {
 app.get('/details', async (req, res) => {
     const lat = req.query.lat;
     const lon = req.query.lon;
+    console.log(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=ebc29ff2eb43de72257d2b23fb640257&units=imperial`)
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=ebc29ff2eb43de72257d2b23fb640257&units=imperial`);
     res.send(response.data);
 })

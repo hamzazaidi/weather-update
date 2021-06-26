@@ -273,6 +273,7 @@
       .then((response) => response.json())
       .then((data) => {
         state = { ...state, weatherDetails: { ...data } };
+        console.log(state)
         renderCurrentDay();
         renderHourly();
         renderDaily();
