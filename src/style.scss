@@ -49,6 +49,9 @@ body {
         .weather-hourly {
           opacity: 1;
         }
+        .weather-daily {
+          opacity: 1;
+        }
       }
       .auto-complete{
         position: relative;
@@ -152,7 +155,7 @@ body {
     }
 
     .current-weather-day-details {
-      transition: all 0.8s ease-out;
+      transition: all 0.6s ease-out;
       display: flex;
       opacity: 0;
       z-index: -1;
@@ -211,6 +214,32 @@ body {
         }
         .time {
           color: $text-color-1;
+        }
+      }
+    }
+
+    .weather-daily {
+      transition: all 0.8s ease-out;
+      opacity: 0;
+      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+      .daily {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-size: 20px;
+        border-bottom: 1px solid $base-bright;
+        .day {
+          flex-grow: 1;
+        }
+        .icon, .temp {
+          width: 10%;
+          text-align: center;
+          &.high {
+            color: $base-bright-1;
+          }
+          &.low {
+            color: $text-color;
+          }
         }
       }
     }

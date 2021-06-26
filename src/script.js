@@ -9,6 +9,14 @@
       </div>
     </div>
     `,
+    daily: `
+    <div class="daily">
+      <div data-attrib="day" class="day">Sunday</div>
+      <div class="icon"><img data-attrib="icon" src="./src/svg/13d.svg" width="50" alt="" /></div>
+      <div data-attrib="high" class="temp high">89&#176;</div>
+      <div data-attrib="low" class="temp low">65&#176;</div>
+    </div>
+    `
   };
 
   const appEl = document.getElementById("search-section");
@@ -20,6 +28,7 @@
     ".current-weather-day-details"
   );
   const hourlyDetailsEl = appEl.querySelector(".weather-hourly");
+  const dailyDetailsEl = appEl.querySelector('.weather-daily')
   const locationUrl = "http://localhost:8080/getLocations";
   const detailsUrl = "http://localhost:8080/details";
   const initalSelectedCity = {
@@ -51,6 +60,7 @@
   const displayTemp = (temp) => Math.ceil(temp);
 
   const renderCurrentDay = () => {
+    console.log(state.weatherDetails)
     const { current } = state.weatherDetails;
     const { weather } = current;
     const options = {
@@ -92,8 +102,28 @@
     });
   };
 
+  renderDaily = () => {
+    const { daily } = state.weatherDetails;
+    daily.slice(1, daily.length).forEach(d => {
+      const { weather } = d;
+      const { temp } = d;
+      const template = templates.daily;
+      const weekday = getDate(d.dt).toLocaleDateString("en-US", { weekday: "long" })
+      const dom = stringToHTML(template).querySelector(".daily");
+      dom.querySelector('div[data-attrib="day"]').innerText = weekday;
+      dom.querySelector(
+        'img[data-attrib="icon"]'
+      ).src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
+      dom.querySelector('div[data-attrib="high"]').innerText = displayTemp(temp.max);
+      dom.querySelector('div[data-attrib="low"]').innerText = displayTemp(temp.min);
+      dailyDetailsEl.appendChild(dom);
+    })
+  }
+
   const clearList = () => {
     optionListEl.innerHTML = "";
+    hourlyDetailsEl.innerHTML = '';
+    dailyDetailsEl.innerHTML = "";
     autoCompleteEl.classList.add("no-options");
   };
 
@@ -179,6 +209,7 @@
         state = { ...state, weatherDetails: { ...data } };
         renderCurrentDay();
         renderHourly();
+        renderDaily();
       });
   };
 
