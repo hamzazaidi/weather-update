@@ -1,5 +1,41 @@
 (() => {
   const templates = {
+    current: `
+    <article class="weather_day">
+      <div class="weather_graphic">
+        <img
+          class="weather_icon"
+          data-attrib="icon"
+          src=""
+          width="200"
+          alt=""
+        />
+        <div class="weather_condition" data-attrib="condition"></div>
+      </div>
+      <div class="weather_info">
+        <div data-attrib="date"></div>
+        <h1><span data-attrib="temp"></span>&#176;</h1>
+        <div class="weather_feels_like">
+          Feels like
+          <span data-attrib="feels-like">89</span>&#176;
+        </div>
+      </div>
+      <div class="additional-info">
+        <div class="sunrise">
+          <img src="https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/all/sunrise.svg" alt="" width="70">
+          <span data-attrib="sunrise">5:35 AM</span>
+        </div>
+        <div class="sunset">
+          <img src="https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/all/sunset.svg" alt="" width="70">
+          <span data-attrib="sunset">8:35 PM</span>
+        </div>
+        <div class="humidity">
+          <img src="https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/all/humidity.svg" alt="" width="70">
+          <span data-attrib="humidity">70%</span>
+        </div>
+      </div>
+    </article>
+    `,
     hourly: `
     <div class="hourly">
       <div class="time" data-attrib="time"></div>
@@ -16,7 +52,7 @@
       <div data-attrib="high" class="temp high">89&#176;</div>
       <div data-attrib="low" class="temp low">65&#176;</div>
     </div>
-    `
+    `,
   };
 
   const appEl = document.getElementById("search-section");
@@ -28,7 +64,7 @@
     ".current-weather-day-details"
   );
   const hourlyDetailsEl = appEl.querySelector(".weather-hourly");
-  const dailyDetailsEl = appEl.querySelector('.weather-daily')
+  const dailyDetailsEl = appEl.querySelector(".weather-daily");
   const locationUrl = "http://localhost:8080/getLocations";
   const detailsUrl = "http://localhost:8080/details";
   const initalSelectedCity = {
@@ -60,27 +96,48 @@
   const displayTemp = (temp) => Math.ceil(temp);
 
   const renderCurrentDay = () => {
-    console.log(state.weatherDetails)
+    const template = templates.current;
     const { current } = state.weatherDetails;
+    const sunrise = getDate(current.sunrise);
+    const sunset = getDate(current.sunset);
     const { weather } = current;
+    const dom = stringToHTML(template).querySelector(".weather_day");
     const options = {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",
     };
-    currentWeatherDayDetailsEl.querySelector(
-      '#current-weather-day-details img[data-attrib="icon"]'
+    dom.querySelector(
+      'img[data-attrib="icon"]'
     ).src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
-    currentWeatherDayDetailsEl.querySelector(
-      'div[data-attrib="condition"]'
-    ).innerText = weather[0].description.toUpperCase();
-    currentWeatherDayDetailsEl.querySelector(
-      'div[data-attrib="date"]'
-    ).innerText = getDate(current.dt).toLocaleDateString("en-US", options);
-    currentWeatherDayDetailsEl.querySelector(
-      'span[data-attrib="temp"]'
-    ).innerText = displayTemp(current.temp);
+    dom.querySelector('div[data-attrib="condition"]').innerText =
+      weather[0].description.toUpperCase();
+    dom.querySelector('div[data-attrib="date"]').innerText = getDate(
+      current.dt
+    ).toLocaleDateString("en-US", options);
+    dom.querySelector('span[data-attrib="temp"]').innerText = displayTemp(
+      current.temp
+    );
+    dom.querySelector('span[data-attrib="feels-like"]').innerText = displayTemp(
+      current.feels_like
+    );
+    dom.querySelector('span[data-attrib="sunrise"]').innerText =
+      sunrise.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      });
+    dom.querySelector('span[data-attrib="sunset"]').innerText =
+      sunset.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      });
+    dom.querySelector(
+      'span[data-attrib="humidity"]'
+    ).innerText = `${current.humidity}%`;
+    currentWeatherDayDetailsEl.appendChild(dom);
   };
 
   const renderHourly = () => {
@@ -88,10 +145,12 @@
     hourly.forEach((h, i) => {
       const { weather } = h;
       const template = templates.hourly;
+      const hourlyDt = getDate(h.dt);
       const dom = stringToHTML(template).querySelector(".hourly");
-      dom.querySelector('div[data-attrib="time"]').innerText = i === 0 ? 'Now' :getDate(
-        h.dt
-      ).toLocaleString("en-US", { hour: "numeric", hour12: true });
+      dom.querySelector('div[data-attrib="time"]').innerText =
+        i === 0
+          ? "Now"
+          : hourlyDt.toLocaleString("en-US", { hour: "numeric", hour12: true });
       dom.querySelector(
         'img[data-attrib="icon"]'
       ).src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
@@ -104,25 +163,32 @@
 
   renderDaily = () => {
     const { daily } = state.weatherDetails;
-    daily.slice(1, daily.length).forEach(d => {
+    daily.slice(1, daily.length).forEach((d) => {
       const { weather } = d;
       const { temp } = d;
       const template = templates.daily;
-      const weekday = getDate(d.dt).toLocaleDateString("en-US", { weekday: "long" })
+      const weekday = getDate(d.dt).toLocaleDateString("en-US", {
+        weekday: "long",
+      });
       const dom = stringToHTML(template).querySelector(".daily");
       dom.querySelector('div[data-attrib="day"]').innerText = weekday;
       dom.querySelector(
         'img[data-attrib="icon"]'
       ).src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
-      dom.querySelector('div[data-attrib="high"]').innerText = displayTemp(temp.max);
-      dom.querySelector('div[data-attrib="low"]').innerText = displayTemp(temp.min);
+      dom.querySelector('div[data-attrib="high"]').innerText = displayTemp(
+        temp.max
+      );
+      dom.querySelector('div[data-attrib="low"]').innerText = displayTemp(
+        temp.min
+      );
       dailyDetailsEl.appendChild(dom);
-    })
-  }
+    });
+  };
 
   const clearList = () => {
     optionListEl.innerHTML = "";
-    hourlyDetailsEl.innerHTML = '';
+    currentWeatherDayDetailsEl.innerHTML = "";
+    hourlyDetailsEl.innerHTML = "";
     dailyDetailsEl.innerHTML = "";
     autoCompleteEl.classList.add("no-options");
   };
