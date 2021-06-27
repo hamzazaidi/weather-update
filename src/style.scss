@@ -40,15 +40,20 @@ body {
         .current-weather-day-details {
           opacity: 1;
           z-index: 1;
+          transform: scale(1);
         }
         .weather-hourly {
           opacity: 1;
+          transform: scale(1);
         }
         .weather-daily {
           opacity: 1;
+          transform: scale(1);
         }
         .unit-converter {
           display: flex;
+          opacity: 1;
+          transform: scale(1);
         }
       }
       .auto-complete{
@@ -153,6 +158,8 @@ body {
 
     .unit-converter {
       display: none;
+      opacity: 0;
+      transform: scale(0);
       justify-content: flex-end;
       margin: 20px 0;
       animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
@@ -183,11 +190,16 @@ body {
     }
 
     .current-weather-day-details {
-      transition: all 0.6s ease-out;
+      transition: transform 0.7s ease-out;
       display: flex;
       opacity: 0;
       z-index: -1;
+      transform: scale(0);
       height: $current-detail-height * 1px;
+      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
+      &:hover {
+        transform: scale(0);
+      }
       @media only screen and (max-width: 600px) {
         flex-wrap: wrap;
       }
@@ -248,6 +260,7 @@ body {
       overflow: scroll;
       transition: all 0.8s ease-out;
       opacity: 0;
+      transform: scale(0);
       animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
       height: $hourly-detail-height * 1px;
       @media only screen and (max-width: 600px) {
@@ -268,6 +281,7 @@ body {
     .weather-daily {
       transition: all 0.8s ease-out;
       opacity: 0;
+      transform: scale(0);
       animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
       .daily {
         display: flex;
