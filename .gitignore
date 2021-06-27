@@ -5,6 +5,7 @@ dist
 # dependencies
 node_modules/
 .snowpack/
+.parcel-cache/
 
 # logs
 npm-debug.log*
