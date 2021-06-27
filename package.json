@@ -2,12 +2,12 @@
   "scripts": {
     "dev": "parcel index.html",
     "build:client": "parcel build index.html",
-    "build:server": "node server.js --no-warnings",
+    "build:server": "node server.js",
     "build:all": "npm run build:client && npm run build:server",
     "heroku-postbuild": "npm run build:all"
   },
   "engines": {
-    "node": "10.16.0",
+    "node": "11.0.0",
     "npm": "6.9.0"
   },
   "devDependencies": {
