@@ -3,12 +3,12 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
-const cityList = require('./src/city.list.json')
+//const cityList = require('./src/city.list.json')
 
 app.use(cors());
 
 app.get('/getLocations', async (req, res) => {
-    const list = cityList.filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
+    const list = [].filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
     res.send(list)
 })
 
