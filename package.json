@@ -6,6 +6,10 @@
     "build:all": "npm run build:client && npm run build:server",
     "heroku-postbuild": "npm run build:all"
   },
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.9.0"
+  },
   "devDependencies": {
     "cssnano": "^5.0.6",
     "postcss": "^8.3.5",
