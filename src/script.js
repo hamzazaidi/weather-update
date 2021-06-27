@@ -80,9 +80,25 @@
   };
   let state = {
     cities: [],
+    selectedUnit: sessionStorage.getItem('unit-measurement') || 'imperial',
     selectedCity: { ...initalSelectedCity },
     weatherDetails: {},
   };
+
+  const initialize = () => {
+    updateUnitButton();
+  }
+
+  const updateUnitButton = () => {    
+    unitConverter.querySelectorAll('button').forEach(btn => {
+      const unit = btn.getAttribute('data-attrib');
+      if(unit === state.selectedUnit) {
+        btn.classList.add('selected')
+      } else {
+        btn.classList.remove('selected')
+      }
+    })
+  }
 
   const stringToHTML = (str) => {
     var parser = new DOMParser();
@@ -298,7 +314,19 @@
     renderDaily();
   };
 
-  autoCompleteEl.addEventListener("keyup", (e) => {
+  const delay = (callback, ms) => {
+    var timer = 0;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        callback.apply(context, args);
+      }, ms || 0);
+    };
+  }
+  
+
+  autoCompleteEl.addEventListener("keyup", delay((e) => {
     const value = e.target.value;
     if (value === state.selectedCity.title) {
       return;
@@ -306,13 +334,14 @@
     if (value.length > 3) {
       fethCityNames(value);
     } else {
-      clearList();
+      setTimeout(() => clearList(), 1000)      
       clearSelectedCity();
     }
-  });
+  }, 500));
 
   optionListEl.addEventListener("click", (e) => {
     const id = parseInt(e.target.dataset.id);
+    const unit = state.selectedUnit;
     if (id > 0) {
       state = {
         ...state,
@@ -322,16 +351,20 @@
       };
       setSearchBoxValue();
       setLocationDetails(state.selectedCity);
-      fetchDetails();
+      fetchDetails(unit);
       clearList();
     }
   });
 
   unitConverter.addEventListener('click', (e) => {
     const unit = e.target.getAttribute("data-attrib")
+    sessionStorage.setItem('unit-measurement', unit)
+    state = { ...state, selectedUnit: unit };
     clearList();
-    fetchDetails(unit)
+    fetchDetails(unit);
+    updateUnitButton();
   })
 
+  initialize();
   
 })();
