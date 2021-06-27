@@ -12,9 +12,9 @@
   },
   "devDependencies": {
     "cssnano": "^5.0.6",
+    "parcel": "latest",
     "postcss": "^8.3.5",
-    "sass": "^1.35.1",
-    "parcel": "latest"
+    "sass": "^1.35.1"
   },
   "dependencies": {
     "axios": "^0.21.1",
