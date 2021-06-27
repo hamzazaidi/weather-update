@@ -1,9 +1,13 @@
 {
   "scripts": {
     "dev": "parcel index.html",
-    "build": "parcel build index.html"
+    "build:client": "parcel build index.html --no-minify",
+    "build:server": "node server.js",
+    "build:all": "npm run build:client && npm run build:server"
   },
   "devDependencies": {
+    "cssnano": "^5.0.6",
+    "postcss": "^8.3.5",
     "sass": "^1.35.1"
   },
   "dependencies": {

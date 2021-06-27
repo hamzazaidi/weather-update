@@ -1,3 +1,4 @@
+@use 'sass:math';
 $base-color: #00203e;
 $base-bright: #0374ff;
 $base-bright-1: #00dfff;
@@ -292,7 +293,7 @@ body {
         padding: 10px;
         font-size: 20px;
         border-bottom: 1px solid $base-bright;
-        height: ($daily-detail-height/7) * 1px;
+        height:  math.div($daily-detail-height, 7) * 1px;
         .day {
           flex-grow: 1;
         }
