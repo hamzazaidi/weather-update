@@ -3,7 +3,8 @@
     "dev": "parcel index.html",
     "build:client": "parcel build index.html --no-minify",
     "build:server": "node server.js",
-    "build:all": "npm run build:client && npm run build:server"
+    "build:all": "npm run build:client && npm run build:server",
+    "heroku-postbuild": "npm run build:all"
   },
   "devDependencies": {
     "cssnano": "^5.0.6",
