@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "parcel index.html",
     "build:client": "parcel build index.html",
-    "build:server": "node server.js",
+    "build:server": "node server.js --no-warnings",
     "build:all": "npm run build:client && npm run build:server",
     "heroku-postbuild": "npm run build:all"
   },
@@ -11,6 +11,7 @@
     "npm": "6.9.0"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-beta.2",
     "cssnano": "^5.0.6",
     "parcel": "latest",
     "postcss": "^8.3.5",
