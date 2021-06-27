@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 app.get('/getLocations', async (req, res) => {
-    const list = [].filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
+    const list = cityList.filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
     res.send(list)
 })
 
@@ -21,12 +21,12 @@ app.get('/details', async (req, res) => {
 })
 
 // Serve only the static files form the dist directory
-app.use(express.static(__dirname + '/dist'));
+// app.use(express.static(__dirname + '/dist'));
 
-app.get('/*', function (req, res) {
+// app.get('/*', function (req, res) {
 
-    res.sendFile(path.join(__dirname + '/dist/index.html'));
-});
+//     res.sendFile(path.join(__dirname + '/dist/index.html'));
+// });
 
 // Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8080);
