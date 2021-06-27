@@ -3,7 +3,7 @@
     "dev": "parcel index.html",
     "build:client": "parcel build index.html",
     "build:server": "node server.js",
-    "build:all": "npm run build:client && npm run build:server",
+    "build:all": "npm run build:client",
     "heroku-postbuild": "npm run build:all"
   },
   "engines": {
