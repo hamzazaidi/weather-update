@@ -24,7 +24,6 @@ app.get('/details', async (req, res) => {
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/*', function (req, res) {
-    console.log('path ====>', path.join(__dirname, '..', 'dist', 'index.html'))
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
