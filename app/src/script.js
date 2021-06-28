@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 (() => {
   const templates = {
     current: `
@@ -66,8 +67,8 @@
   const hourlyDetailsEl = appEl.querySelector(".weather-hourly");
   const dailyDetailsEl = appEl.querySelector(".weather-daily");
   const unitConverter = appEl.querySelector(".unit-converter");
-  const locationUrl = "/getLocations";
-  const detailsUrl = "/details";
+  const locationUrl = "http://localhost:8080/getLocations";
+  const detailsUrl = "http://localhost:8080/details";
   const initalSelectedCity = {
     id: -1,
     name: "",
@@ -113,15 +114,18 @@
     return check;
   };  
 
-  const getDate = (unix_timestamp) => new Date(unix_timestamp * 1000);
+  const getDate = (unix_timestamp, timezone) => {
+    return moment.unix(unix_timestamp).tz(timezone);
+  };
 
   const displayTemp = (temp) => Math.ceil(temp);
 
   const renderCurrentDay = () => {
     const template = templates.current;
-    const { current } = state.weatherDetails;
-    const sunrise = getDate(current.sunrise);
-    const sunset = getDate(current.sunset);
+    console.log(state.weatherDetails)
+    const { current, timezone } = state.weatherDetails;
+    const sunrise = getDate(current.sunrise, timezone);
+    const sunset = getDate(current.sunset, timezone);
     const { weather } = current;
     const dom = stringToHTML(template).querySelector(".weather_day");
     const options = {
@@ -140,8 +144,8 @@
     dom.querySelector('div[data-attrib="condition"]').innerText =
       weather[0].description.toUpperCase();
     dom.querySelector('div[data-attrib="date"]').innerText = getDate(
-      current.dt
-    ).toLocaleDateString("en-US", options);
+      current.dt, timezone
+    ).format("dddd, MMMM Do YYYY");
     dom.querySelector('span[data-attrib="temp"]').innerText = displayTemp(
       current.temp
     );
@@ -149,17 +153,9 @@
       current.feels_like
     );
     dom.querySelector('span[data-attrib="sunrise"]').innerText =
-      sunrise.toLocaleString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      });
+      sunrise.format('hh:mm A');
     dom.querySelector('span[data-attrib="sunset"]').innerText =
-      sunset.toLocaleString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      });
+      sunset.format('hh:mm A');
     dom.querySelector(
       'span[data-attrib="humidity"]'
     ).innerText = `${current.humidity}%`;
@@ -167,11 +163,11 @@
   };
 
   const renderHourly = () => {
-    const { hourly } = state.weatherDetails;
+    const { hourly, timezone } = state.weatherDetails;
     hourly.forEach((h, i) => {
       const { weather } = h;
       const template = templates.hourly;
-      const hourlyDt = getDate(h.dt);
+      const hourlyDt = getDate(h.dt, timezone);
       const dom = stringToHTML(template).querySelector(".hourly");
       const iconEl =dom.querySelector(
         'img[data-attrib="icon"]'
@@ -179,7 +175,7 @@
       dom.querySelector('div[data-attrib="time"]').innerText =
         i === 0
           ? "Now"
-          : hourlyDt.toLocaleString("en-US", { hour: "numeric", hour12: true });
+          : hourlyDt.format('hh:mm A');
       
       iconEl.src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
       if(mobileCheck()) {
@@ -193,14 +189,12 @@
   };
 
   renderDaily = () => {
-    const { daily } = state.weatherDetails;
+    const { daily, timezone } = state.weatherDetails;
     daily.slice(1, daily.length).forEach((d) => {
       const { weather } = d;
       const { temp } = d;
       const template = templates.daily;
-      const weekday = getDate(d.dt).toLocaleDateString("en-US", {
-        weekday: "long",
-      });
+      const weekday = getDate(d.dt, timezone).format('dddd');
       const dom = stringToHTML(template).querySelector(".daily");
       dom.querySelector('div[data-attrib="day"]').innerText = weekday;
       dom.querySelector(
