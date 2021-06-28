@@ -1,4 +1,5 @@
 # build output
+dist
 .cache
 .parcel-cache
 
