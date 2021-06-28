@@ -67,8 +67,10 @@ const moment = require('moment-timezone');
   const hourlyDetailsEl = appEl.querySelector(".weather-hourly");
   const dailyDetailsEl = appEl.querySelector(".weather-daily");
   const unitConverter = appEl.querySelector(".unit-converter");
-  const locationUrl = "http://localhost:8080/getLocations";
-  const detailsUrl = "http://localhost:8080/details";
+  // const locationUrl = "http://localhost:8080/getLocations";
+  // const detailsUrl = "http://localhost:8080/details";
+  const locationUrl = "/getLocations";
+  const detailsUrl = "/details";
   const initalSelectedCity = {
     id: -1,
     name: "",
