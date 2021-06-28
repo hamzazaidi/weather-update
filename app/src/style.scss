@@ -56,6 +56,10 @@ body {
           opacity: 1;
           transform: scale(1);
         }
+        .alerts {
+          opacity: 1;
+          transform: scale(1);
+        }
       }
       .auto-complete{
         position: relative;
@@ -253,6 +257,40 @@ body {
               width: 50%;
             }
           }
+        }
+      }
+    }
+
+    .alerts {
+      margin-top: 20px;
+      transition: all 0.8s ease-out;
+      opacity: 0;
+      transform: scale(0);
+      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+      article {
+        background: #784545;
+        border: 2px dashed #f85454;
+        padding: 20px;
+        border-radius: 5px;
+        > * {
+          margin-bottom: 10px;
+          margin-top: 0;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+        .sender {
+          color: $text-color-1;
+        }
+        .dates {
+          color: darken($text-color, 20%);
+          font-style: italic;
+        }
+        .tag {
+          background-color: $base-bright;
+          padding: 5px;
+          border: 2px solid $base-color;
+          border-radius: 5px;
         }
       }
     }

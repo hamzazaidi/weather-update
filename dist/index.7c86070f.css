@@ -51,6 +51,10 @@ body div.container > section.search-bar.selected .unit-converter {
   opacity: 1;
   transform: scale(1);
 }
+body div.container > section.search-bar.selected .alerts {
+  opacity: 1;
+  transform: scale(1);
+}
 body div.container > section.search-bar .auto-complete {
   position: relative;
   box-sizing: border-box;
@@ -249,6 +253,39 @@ body div.container .current-weather-day-details article .additional-info > div {
 }
 body div.container .current-weather-day-details article .additional-info > div > span {
   width: 50%;
+}
+body div.container .alerts {
+  margin-top: 20px;
+  transition: all 0.8s ease-out;
+  opacity: 0;
+  transform: scale(0);
+  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+}
+body div.container .alerts article {
+  background: #784545;
+  border: 2px dashed #f85454;
+  padding: 20px;
+  border-radius: 5px;
+}
+body div.container .alerts article > * {
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+body div.container .alerts article > *:last-child {
+  margin-bottom: 0;
+}
+body div.container .alerts article .sender {
+  color: #b1b1b1;
+}
+body div.container .alerts article .dates {
+  color: #cccccc;
+  font-style: italic;
+}
+body div.container .alerts article .tag {
+  background-color: #0374ff;
+  padding: 5px;
+  border: 2px solid #00203e;
+  border-radius: 5px;
 }
 body div.container .weather-hourly {
   margin: 40px 0;

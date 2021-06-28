@@ -498,6 +498,24 @@ const moment = require('moment-timezone');
       <div data-attrib="low" class="temp low">65&#176;</div>
     </div>
     `,
+    alert: `
+    <article>
+      <h3 data-attrib="event" class="event">Heat Advisory</h3>
+      <div data-attrib="dates" class="dates">asdfas</div>
+      <div data-attrib="sender" class="sender">NWS Philadelphia - Mount Holly (New Jersey, Delaware, Southeastern Pennsylvania)</div>
+      <p data-attrib="description">...HEAT ADVISORY IN EFFECT FROM 11 AM TUESDAY TO 8 PM EDT
+        WEDNESDAY...
+        * WHAT...Heat index values up to 104 expected.
+        * WHERE...In New Jersey, Ocean and Southeastern Burlington. In
+        Pennsylvania, Western Montgomery and Upper Bucks.
+        * WHEN...From 11 AM Tuesday to 8 PM EDT Wednesday.
+        * IMPACTS...Hot temperatures and high humidity may cause heat
+        illnesses to occur.</p>
+      <div data-attrib="tags">
+        <span class="tag">Extreme temperature value</span>
+      </div>
+    </article>
+    `
   };
 
   const appEl = document.getElementById("search-section");
@@ -511,8 +529,11 @@ const moment = require('moment-timezone');
   const hourlyDetailsEl = appEl.querySelector(".weather-hourly");
   const dailyDetailsEl = appEl.querySelector(".weather-daily");
   const unitConverter = appEl.querySelector(".unit-converter");
-  const locationUrl = "http://localhost:8080/getLocations";
-  const detailsUrl = "http://localhost:8080/details";
+  const alertsEl = appEl.querySelector('.alerts')
+  // const locationUrl = "http://localhost:8080/getLocations";
+  // const detailsUrl = "http://localhost:8080/details";
+  const locationUrl = "/getLocations";
+  const detailsUrl = "/details";
   const initalSelectedCity = {
     id: -1,
     name: "",
@@ -571,13 +592,7 @@ const moment = require('moment-timezone');
     const sunrise = getDate(current.sunrise, timezone);
     const sunset = getDate(current.sunset, timezone);
     const { weather } = current;
-    const dom = stringToHTML(template).querySelector(".weather_day");
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
+    const dom = stringToHTML(template).querySelector(".weather_day");   
     const iconEl =  dom.querySelector(
       'img[data-attrib="icon"]'
     )
@@ -654,12 +669,31 @@ const moment = require('moment-timezone');
     });
   };
 
+  renderAlerts = () => {
+    const { alerts, timezone } = state.weatherDetails;    
+    if(alerts) {
+      alerts.forEach(a => {
+        const template = templates.alert;
+        const start = getDate(a.start, timezone).format("dddd, MMMM Do YYYY")
+        const end = getDate(a.end, timezone).format("dddd, MMMM Do YYYY")
+        const dom = stringToHTML(template).querySelector("article");
+        dom.querySelector('h3[data-attrib="event"]').innerText = a.event;
+        dom.querySelector('div[data-attrib="dates"]').innerText = `${start} - ${end}`;
+        dom.querySelector('div[data-attrib="sender"]').innerText = a.sender_name;
+        dom.querySelector('p[data-attrib="description"]').innerHTML = a.description;
+        dom.querySelector('div[data-attrib="tags"]').innerHTML = a.tags.map(t => (`<span class="tag">${t}</span>`));
+        alertsEl.appendChild(dom);
+      })
+    }
+  }
+
   const clearList = () => {
     optionListEl.innerHTML = "";
     currentWeatherDayDetailsEl.innerHTML = "";
     hourlyDetailsEl.innerHTML = "";
     dailyDetailsEl.innerHTML = "";
     autoCompleteEl.classList.add("no-options");
+    alertsEl.innerHTML = '';
   };
 
   const clearSelectedCity = () => {
@@ -750,6 +784,7 @@ const moment = require('moment-timezone');
     renderCurrentDay();
     renderHourly();
     renderDaily();
+    renderAlerts();
   };
 
   const delay = (callback, ms) => {
