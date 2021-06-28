@@ -3,7 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
-const cityList = require('./src/city.list.json')
+const cityList = require('./app/src/city.list.json')
 
 app.use(cors());
 
