@@ -1,11 +1,12 @@
 # build output
 dist
 .cache
+.parcel-cache
 
 # dependencies
 node_modules/
 .snowpack/
-.parcel-cache/
+
 
 # logs
 npm-debug.log*
