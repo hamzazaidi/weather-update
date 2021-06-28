@@ -1,4 +1,5 @@
 {
+  "name": "weather-update",
   "scripts": {
     "dev": "parcel app/index.html",
     "build": "parcel build app/index.html",
