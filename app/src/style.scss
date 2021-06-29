@@ -311,8 +311,13 @@ body {
       }
     }
 
-    .alerts, .weather-hourly, .weather-daily, .location-details, .unit-converter {
+    .alerts, .weather-daily, .location-details {
       transform: translateX(10%);
+      opacity: 0;
+    }
+
+    .alerts, .weather-hourly, .unit-converter {
+      transform: translateX(-10%);
       opacity: 0;
     }
     

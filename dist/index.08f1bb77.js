@@ -535,7 +535,7 @@ const moment = require('moment-timezone');
   const locationUrl = "/getLocations";
   const detailsUrl = "/details";
   const tl = gsap.timeline();
-  tl.to('.current-weather-day-details', { opacity: 1, duration: 1, x: 0, scale: 1, pointerEvent: 'auto' })
+  tl.to('.current-weather-day-details', { opacity: 1, duration: .6, x: 0, scale: 1, pointerEvent: 'auto' })
   tl.to('.stagger', { x:0, opacity:1, stagger: .2 }, "-=.3")
   tl.pause();
   const initalSelectedCity = {

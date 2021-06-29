@@ -300,8 +300,12 @@ body div.container .weather-daily .daily .icon.high, body div.container .weather
 body div.container .weather-daily .daily .icon.low, body div.container .weather-daily .daily .temp.low {
   color: #fff;
 }
-body div.container .alerts, body div.container .weather-hourly, body div.container .weather-daily, body div.container .location-details, body div.container .unit-converter {
+body div.container .alerts, body div.container .weather-daily, body div.container .location-details {
   transform: translateX(10%);
+  opacity: 0;
+}
+body div.container .alerts, body div.container .weather-hourly, body div.container .unit-converter {
+  transform: translateX(-10%);
   opacity: 0;
 }
 
