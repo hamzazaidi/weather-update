@@ -108,7 +108,7 @@ body div.container > section.search-bar .auto-complete.is-loading img.loading {
   }
 }
 body div.container > section.search-bar .location-details {
-  margin: 30px;
+  margin: 30px 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -117,6 +117,7 @@ body div.container > section.search-bar .location-details {
 body div.container > section.search-bar .location-details > div span {
   color: #b1b1b1;
   margin: 0 10px;
+  font-size: 35px;
 }
 body div.container .unit-converter > div {
   display: flex;

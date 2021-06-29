@@ -4,13 +4,20 @@ const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const cityList = require('./app/src/city.list.json')
+const countryList = require('./app/src/countries.json')
+const stateList = require('./app/src/states.json')
 
 app.use(cors());
 
 app.get('/getLocations', async (req, res) => {
     try {
         const list = cityList.filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
-        res.send(list);
+        const populatedList = list.map(item => ({
+            ...item,
+            country: countryList.find(c => c.code === item.country).name || item.country,
+            state: stateList[item.state] || item.state
+        }))
+        res.send(populatedList);
     } catch (error) {
         res.sendStatus(500);
     }
