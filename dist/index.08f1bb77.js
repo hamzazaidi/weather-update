@@ -442,7 +442,7 @@ id) /*: string*/
 }
 
 },{}],"365qn":[function(require,module,exports) {
-var _momentTimezone = require('moment-timezone');
+var _momentTimezone = require("moment-timezone");
 (() => {
   const templates = {
     current: `
@@ -526,23 +526,23 @@ var _momentTimezone = require('moment-timezone');
   const hourlyDetailsEl = appEl.querySelector(".weather-hourly");
   const dailyDetailsEl = appEl.querySelector(".weather-daily");
   const unitConverter = appEl.querySelector(".unit-converter");
-  const alertsEl = appEl.querySelector('.alerts');
+  const alertsEl = appEl.querySelector(".alerts");
   // const locationUrl = "http://localhost:8080/getLocations";
   // const detailsUrl = "http://localhost:8080/details";
   const locationUrl = "/getLocations";
   const detailsUrl = "/details";
   const tl = gsap.timeline();
-  tl.to('.current-weather-day-details', {
+  tl.to(".current-weather-day-details", {
     opacity: 1,
-    duration: .6,
+    duration: 0.6,
     x: 0,
     scale: 1,
-    pointerEvent: 'auto'
+    pointerEvent: "auto"
   });
-  tl.to('.stagger', {
+  tl.to(".stagger", {
     x: 0,
     opacity: 1,
-    stagger: .2
+    stagger: 0.2
   }, "-=.3");
   tl.pause();
   const initalSelectedCity = {
@@ -557,7 +557,7 @@ var _momentTimezone = require('moment-timezone');
   };
   let state = {
     cities: [],
-    selectedUnit: sessionStorage.getItem('unit-measurement') || 'imperial',
+    selectedUnit: sessionStorage.getItem("unit-measurement") || "imperial",
     selectedCity: {
       ...initalSelectedCity
     },
@@ -567,12 +567,12 @@ var _momentTimezone = require('moment-timezone');
     updateUnitButton();
   };
   const updateUnitButton = () => {
-    unitConverter.querySelectorAll('button').forEach(btn => {
-      const unit = btn.getAttribute('data-attrib');
+    unitConverter.querySelectorAll("button").forEach(btn => {
+      const unit = btn.getAttribute("data-attrib");
       if (unit === state.selectedUnit) {
-        btn.classList.add('selected');
+        btn.classList.add("selected");
       } else {
-        btn.classList.remove('selected');
+        btn.classList.remove("selected");
       }
     });
   };
@@ -603,14 +603,14 @@ var _momentTimezone = require('moment-timezone');
     const iconEl = dom.querySelector('img[data-attrib="icon"]');
     iconEl.src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
     if (mobileCheck()) {
-      iconEl.setAttribute('width', 100);
+      iconEl.setAttribute("width", 100);
     }
     dom.querySelector('div[data-attrib="condition"]').innerText = weather[0].description.toUpperCase();
     dom.querySelector('div[data-attrib="date"]').innerText = getDate(current.dt, timezone).format("dddd, MMMM Do YYYY");
     dom.querySelector('span[data-attrib="temp"]').innerText = displayTemp(current.temp);
     dom.querySelector('span[data-attrib="feels-like"]').innerText = displayTemp(current.feels_like);
-    dom.querySelector('span[data-attrib="sunrise"]').innerText = sunrise.format('hh:mm A');
-    dom.querySelector('span[data-attrib="sunset"]').innerText = sunset.format('hh:mm A');
+    dom.querySelector('span[data-attrib="sunrise"]').innerText = sunrise.format("hh:mm A");
+    dom.querySelector('span[data-attrib="sunset"]').innerText = sunset.format("hh:mm A");
     dom.querySelector('span[data-attrib="humidity"]').innerText = `${current.humidity}%`;
     currentWeatherDayDetailsEl.appendChild(dom);
   };
@@ -622,10 +622,10 @@ var _momentTimezone = require('moment-timezone');
       const hourlyDt = getDate(h.dt, timezone);
       const dom = stringToHTML(template).querySelector(".hourly");
       const iconEl = dom.querySelector('img[data-attrib="icon"]');
-      dom.querySelector('div[data-attrib="time"]').innerText = i === 0 ? "Now" : hourlyDt.format('h A');
+      dom.querySelector('div[data-attrib="time"]').innerText = i === 0 ? "Now" : hourlyDt.format("h A");
       iconEl.src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
       if (mobileCheck()) {
-        iconEl.setAttribute('width', 50);
+        iconEl.setAttribute("width", 50);
       }
       dom.querySelector('span[data-attrib="temp"]').innerText = displayTemp(h.temp);
       hourlyDetailsEl.appendChild(dom);
@@ -637,7 +637,7 @@ var _momentTimezone = require('moment-timezone');
       const {weather} = d;
       const {temp} = d;
       const template = templates.daily;
-      const weekday = getDate(d.dt, timezone).format('dddd');
+      const weekday = getDate(d.dt, timezone).format("dddd");
       const dom = stringToHTML(template).querySelector(".daily");
       dom.querySelector('div[data-attrib="day"]').innerText = weekday;
       dom.querySelector('img[data-attrib="icon"]').src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
@@ -670,7 +670,7 @@ var _momentTimezone = require('moment-timezone');
     hourlyDetailsEl.innerHTML = "";
     dailyDetailsEl.innerHTML = "";
     autoCompleteEl.classList.add("no-options");
-    alertsEl.innerHTML = '';
+    alertsEl.innerHTML = "";
   };
   const clearSelectedCity = () => {
     appEl.classList.remove("selected");
@@ -724,7 +724,7 @@ var _momentTimezone = require('moment-timezone');
       updateDropdown();
     });
   };
-  const fetchDetails = (unit = 'imperial') => {
+  const fetchDetails = (unit = "imperial") => {
     const {coord} = state.selectedCity;
     const {lat, lon} = coord;
     fetch(`${detailsUrl}?lat=${lat}&lon=${lon}&unit=${unit}`, {
@@ -786,9 +786,9 @@ var _momentTimezone = require('moment-timezone');
       tl.play();
     }
   });
-  unitConverter.addEventListener('click', e => {
+  unitConverter.addEventListener("click", e => {
     const unit = e.target.getAttribute("data-attrib");
-    sessionStorage.setItem('unit-measurement', unit);
+    sessionStorage.setItem("unit-measurement", unit);
     state = {
       ...state,
       selectedUnit: unit
