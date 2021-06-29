@@ -216,6 +216,10 @@ body {
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 25px;
+            @media only screen and (max-width: 600px) {
+              font-size: 14px;
+            }
             > span {
               width: 50%;
             }

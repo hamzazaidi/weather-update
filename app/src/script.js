@@ -86,10 +86,10 @@ import * as moment from "moment-timezone";
   const dailyDetailsEl = appEl.querySelector(".weather-daily");
   const unitConverter = appEl.querySelector(".unit-converter");
   const alertsEl = appEl.querySelector(".alerts");
-  // const locationUrl = "http://localhost:8080/getLocations";
-  // const detailsUrl = "http://localhost:8080/details";
-  const locationUrl = "/getLocations";
-  const detailsUrl = "/details";
+  const locationUrl = "http://localhost:8080/getLocations";
+  const detailsUrl = "http://localhost:8080/details";
+  // const locationUrl = "/getLocations";
+  // const detailsUrl = "/details";
   const tl = gsap.timeline();
   tl.to(".current-weather-day-details", {
     opacity: 1,
