@@ -1,3 +1,4 @@
+import * as moment from 'moment-timezone';
 (() => {
   const templates = {
     current: `
@@ -146,7 +147,6 @@
 
   const renderCurrentDay = () => {
     const template = templates.current;
-    console.log(state.weatherDetails)
     const { current, timezone } = state.weatherDetails;
     const sunrise = getDate(current.sunrise, timezone);
     const sunset = getDate(current.sunset, timezone);
