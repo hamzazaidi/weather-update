@@ -79,6 +79,11 @@ body div.container > section.search-bar .auto-complete .option-list li {
   padding: 20px;
   border-bottom: 1px solid #0374ff;
 }
+@media only screen and (max-width: 600px) {
+  body div.container > section.search-bar .auto-complete .option-list li {
+    padding: 10px;
+  }
+}
 body div.container > section.search-bar .auto-complete .option-list li:last-child {
   border-bottom: 0;
 }
@@ -118,6 +123,11 @@ body div.container > section.search-bar .location-details > div span {
   color: #b1b1b1;
   margin: 0 10px;
   font-size: 35px;
+}
+@media only screen and (max-width: 600px) {
+  body div.container > section.search-bar .location-details > div span {
+    font-size: 20px;
+  }
 }
 body div.container .unit-converter > div {
   display: flex;

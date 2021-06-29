@@ -718,7 +718,7 @@ var _momentTimezone = require("moment-timezone");
     }).then(response => response.json()).then(data => {
       state = {
         ...state,
-        cities: [...data.slice(0, 5)]
+        cities: [...data.slice(0, 15)]
       };
       clearIsLoading();
       updateDropdown();
