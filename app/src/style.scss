@@ -32,35 +32,6 @@ body {
       width: 100%;
     }
     > section.search-bar {
-      transition: all 0.6s ease-out;
-      &.selected {
-        .location-details {
-          opacity: 1;
-          transform: scale(1);
-        }
-        .current-weather-day-details {
-          opacity: 1;
-          z-index: 1;
-          transform: scale(1);
-        }
-        .weather-hourly {
-          opacity: 1;
-          transform: scale(1);
-        }
-        .weather-daily {
-          opacity: 1;
-          transform: scale(1);
-        }
-        .unit-converter {
-          display: flex;
-          opacity: 1;
-          transform: scale(1);
-        }
-        .alerts {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
       .auto-complete{
         position: relative;
         box-sizing: border-box;
@@ -146,11 +117,8 @@ body {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        opacity: 0;
-        transform: scale(0);
         height: $location-detail-height * 1px;
-        transition: all 0.7s ease-in-out;  
-        animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
+            
         > div {
           span {
             color: $text-color-1;
@@ -161,13 +129,11 @@ body {
     
     }
 
-    .unit-converter {
-      display: none;
-      opacity: 0;
-      transform: scale(0);
+    .unit-converter > div {
+      display: flex;
       justify-content: flex-end;
       margin: 20px 0;
-      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
+          
       button {
         background-color: lighten($base-color, 5%);
         padding: 0;
@@ -198,16 +164,12 @@ body {
     }
 
     .current-weather-day-details {
-      transition: transform 0.7s ease-out;
       display: flex;
-      opacity: 0;
       z-index: -1;
-      transform: scale(0);
       height: $current-detail-height * 1px;
-      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);    
-      &:hover {
-        transform: scale(0);
-      }
+      opacity: 0;
+      transform: translateX(10%) scale(.9);
+      pointer-events: none;
       @media only screen and (max-width: 600px) {
         flex-wrap: wrap;
       }
@@ -263,10 +225,7 @@ body {
 
     .alerts {
       margin-top: 20px;
-      transition: all 0.8s ease-out;
-      opacity: 0;
-      transform: scale(0);
-      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+      
       article {
         background: #784545;
         border: 2px dashed #f85454;
@@ -296,17 +255,14 @@ body {
     }
 
     .weather-hourly {
-      margin: 40px 0;
+      margin-top: 20px;
       display: flex;
       justify-content: flex-start;
       overflow: scroll;
-      transition: all 0.8s ease-out;
-      opacity: 0;
-      transform: scale(0);
-      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+      
       height: $hourly-detail-height * 1px;
       @media only screen and (max-width: 600px) {
-        height: ($hourly-detail-height - 45) * 1px;
+        height: ($hourly-detail-height - 35) * 1px;
       }
       .hourly {
         margin: 0 10px;
@@ -316,15 +272,19 @@ body {
         }
         .time {
           color: $text-color-1;
+          margin-bottom: 5px;
+        }
+        @media only screen and (max-width: 600px) {
+          .time {
+            font-size: 14px;
+          }
         }
       }
     }
 
     .weather-daily {
-      transition: all 0.8s ease-out;
-      opacity: 0;
-      transform: scale(0);
-      animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+      margin-top: 20px;
+      
       .daily {
         display: flex;
         align-items: center;
@@ -349,6 +309,11 @@ body {
           }
         }
       }
+    }
+
+    .alerts, .weather-hourly, .weather-daily, .location-details, .unit-converter {
+      transform: translateX(10%);
+      opacity: 0;
     }
     
   }

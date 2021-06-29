@@ -90,6 +90,10 @@ const moment = require('moment-timezone');
   // const detailsUrl = "http://localhost:8080/details";
   const locationUrl = "/getLocations";
   const detailsUrl = "/details";
+  const tl = gsap.timeline();
+  tl.to('.current-weather-day-details', { opacity: 1, duration: 1, x: 0, scale: 1, pointerEvent: 'auto' })
+  tl.to('.stagger', { x:0, opacity:1, stagger: .2 }, "-=.3")
+  tl.pause();
   const initalSelectedCity = {
     id: -1,
     name: "",
@@ -190,7 +194,7 @@ const moment = require('moment-timezone');
       dom.querySelector('div[data-attrib="time"]').innerText =
         i === 0
           ? "Now"
-          : hourlyDt.format('hh:mm A');
+          : hourlyDt.format('h A');
       
       iconEl.src = `https://raw.githubusercontent.com/basmilius/weather-icons/master/production/line/openweathermap/${weather[0].icon}.svg`;
       if(mobileCheck()) {
@@ -244,6 +248,7 @@ const moment = require('moment-timezone');
   }
 
   const clearList = () => {
+    locationDetailsEl.innerHTML = "";
     optionListEl.innerHTML = "";
     currentWeatherDayDetailsEl.innerHTML = "";
     hourlyDetailsEl.innerHTML = "";
@@ -363,7 +368,7 @@ const moment = require('moment-timezone');
     if (value.length > 3) {
       fethCityNames(value);
     } else {
-      setTimeout(() => clearList(), 1000)      
+      tl.reverse();
       clearSelectedCity();
     }
   }, 500));
@@ -379,9 +384,10 @@ const moment = require('moment-timezone');
         },
       };
       setSearchBoxValue();
+      clearList();
       setLocationDetails(state.selectedCity);
       fetchDetails(unit);
-      clearList();
+      tl.play();
     }
   });
 

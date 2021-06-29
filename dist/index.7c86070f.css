@@ -26,35 +26,6 @@ body div.container {
 body div.container > section {
   width: 100%;
 }
-body div.container > section.search-bar {
-  transition: all 0.6s ease-out;
-}
-body div.container > section.search-bar.selected .location-details {
-  opacity: 1;
-  transform: scale(1);
-}
-body div.container > section.search-bar.selected .current-weather-day-details {
-  opacity: 1;
-  z-index: 1;
-  transform: scale(1);
-}
-body div.container > section.search-bar.selected .weather-hourly {
-  opacity: 1;
-  transform: scale(1);
-}
-body div.container > section.search-bar.selected .weather-daily {
-  opacity: 1;
-  transform: scale(1);
-}
-body div.container > section.search-bar.selected .unit-converter {
-  display: flex;
-  opacity: 1;
-  transform: scale(1);
-}
-body div.container > section.search-bar.selected .alerts {
-  opacity: 1;
-  transform: scale(1);
-}
 body div.container > section.search-bar .auto-complete {
   position: relative;
   box-sizing: border-box;
@@ -141,25 +112,18 @@ body div.container > section.search-bar .location-details {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  opacity: 0;
-  transform: scale(0);
   height: 30px;
-  transition: all 0.7s ease-in-out;
-  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
 }
 body div.container > section.search-bar .location-details > div span {
   color: #b1b1b1;
   margin: 0 10px;
 }
-body div.container .unit-converter {
-  display: none;
-  opacity: 0;
-  transform: scale(0);
+body div.container .unit-converter > div {
+  display: flex;
   justify-content: flex-end;
   margin: 20px 0;
-  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
 }
-body div.container .unit-converter button {
+body div.container .unit-converter > div button {
   background-color: #002d58;
   padding: 0;
   border: 1px solid #0374ff;
@@ -170,33 +134,29 @@ body div.container .unit-converter button {
   cursor: pointer;
   box-shadow: 0px 0px 0px #2b638f, 0px 3px 15px rgba(0, 0, 0, 0.4), inset 0px 1px 0px rgba(255, 255, 255, 0.3), inset 0px 0px 3px rgba(255, 255, 255, 0.5);
 }
-body div.container .unit-converter button.selected {
+body div.container .unit-converter > div button.selected {
   background-color: #00478b;
 }
-body div.container .unit-converter button:hover {
+body div.container .unit-converter > div button:hover {
   background-color: #003a71;
 }
-body div.container .unit-converter button:first-child {
+body div.container .unit-converter > div button:first-child {
   border-right: 0;
   border-bottom-left-radius: 5px;
   border-top-left-radius: 5px;
 }
-body div.container .unit-converter button:last-child {
+body div.container .unit-converter > div button:last-child {
   border-left: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
 }
 body div.container .current-weather-day-details {
-  transition: transform 0.7s ease-out;
   display: flex;
-  opacity: 0;
   z-index: -1;
-  transform: scale(0);
   height: 265px;
-  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
-}
-body div.container .current-weather-day-details:hover {
-  transform: scale(0);
+  opacity: 0;
+  transform: translateX(10%) scale(0.9);
+  pointer-events: none;
 }
 @media only screen and (max-width: 600px) {
   body div.container .current-weather-day-details {
@@ -256,10 +216,6 @@ body div.container .current-weather-day-details article .additional-info > div >
 }
 body div.container .alerts {
   margin-top: 20px;
-  transition: all 0.8s ease-out;
-  opacity: 0;
-  transform: scale(0);
-  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
 }
 body div.container .alerts article {
   background: #784545;
@@ -288,19 +244,15 @@ body div.container .alerts article .tag {
   border-radius: 5px;
 }
 body div.container .weather-hourly {
-  margin: 40px 0;
+  margin-top: 20px;
   display: flex;
   justify-content: flex-start;
   overflow: scroll;
-  transition: all 0.8s ease-out;
-  opacity: 0;
-  transform: scale(0);
-  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
   height: 155px;
 }
 @media only screen and (max-width: 600px) {
   body div.container .weather-hourly {
-    height: 110px;
+    height: 120px;
   }
 }
 body div.container .weather-hourly .hourly {
@@ -312,12 +264,15 @@ body div.container .weather-hourly .hourly > div {
 }
 body div.container .weather-hourly .hourly .time {
   color: #b1b1b1;
+  margin-bottom: 5px;
+}
+@media only screen and (max-width: 600px) {
+  body div.container .weather-hourly .hourly .time {
+    font-size: 14px;
+  }
 }
 body div.container .weather-daily {
-  transition: all 0.8s ease-out;
-  opacity: 0;
-  transform: scale(0);
-  animation: slide-up 0.6s cubic-bezier(0.2, 0, 0.2, 1);
+  margin-top: 20px;
 }
 body div.container .weather-daily .daily {
   display: flex;
@@ -344,6 +299,10 @@ body div.container .weather-daily .daily .icon.high, body div.container .weather
 }
 body div.container .weather-daily .daily .icon.low, body div.container .weather-daily .daily .temp.low {
   color: #fff;
+}
+body div.container .alerts, body div.container .weather-hourly, body div.container .weather-daily, body div.container .location-details, body div.container .unit-converter {
+  transform: translateX(10%);
+  opacity: 0;
 }
 
 @keyframes show-details {
