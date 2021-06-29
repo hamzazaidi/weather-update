@@ -231,10 +231,8 @@ body div.container .current-weather-day-details article .additional-info > div {
 body div.container .current-weather-day-details article .additional-info > div > span {
   width: 50%;
 }
-body div.container .alerts {
-  margin-top: 20px;
-}
 body div.container .alerts article {
+  margin-top: 20px;
   background: #784545;
   border: 2px dashed #f85454;
   padding: 20px;
