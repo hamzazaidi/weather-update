@@ -8,16 +8,24 @@ const cityList = require('./app/src/city.list.json')
 app.use(cors());
 
 app.get('/getLocations', async (req, res) => {
-    const list = cityList.filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
-    res.send(list)
+    try {
+        const list = cityList.filter(c => c.name.toLowerCase().startsWith(req.query.location.toLowerCase()))
+        res.send(list);
+    } catch (error) {
+        res.sendStatus(500);
+    }
 })
 
 app.get('/details', async (req, res) => {
-    const lat = req.query.lat;
-    const lon = req.query.lon;
-    const unit = req.query.unit || 'imperial'
-    const response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=ebc29ff2eb43de72257d2b23fb640257&units=${unit}`);
-    res.send(response.data);
+    try {
+        const lat = req.query.lat;
+        const lon = req.query.lon;
+        const unit = req.query.unit || 'imperial'
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=ebc29ff2eb43de72257d2b23fb640257&units=${unit}`);
+        res.send(response.data);    
+    } catch (error) {
+        res.sendStatus(500);
+    }
 })
 
 // Serve only the static files form the dist directory

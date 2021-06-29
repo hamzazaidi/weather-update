@@ -840,6 +840,7 @@ const moment = require('moment-timezone');
     sessionStorage.setItem('unit-measurement', unit)
     state = { ...state, selectedUnit: unit };
     clearList();
+    setLocationDetails(state.selectedCity);
     fetchDetails(unit);
     updateUnitButton();
   })
